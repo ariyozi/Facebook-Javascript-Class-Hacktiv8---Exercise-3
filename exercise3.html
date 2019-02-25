@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>Exercise 3</title>
+  </head>
+  <body>
+    <div class="row justify-content-center mt-4">
+            <div class="col-12 col-md-10 col-lg-8 text-center">
+                <h1>Hello we are using SWAPI Data</h1>
+                <form class="card card-sm">
+                    <div class="card-body row no-gutters align-items-center">
+                        <div class="col-auto">
+                            <i class="fas fa-search h4 text-body"></i>
+                        </div>
+                        <!--end of col-->
+                        <!-- <div class="col">
+                            <select class="form-control form-control-lg form-control-borderless" name="" id="categoryData">
+                                <option value="people">People</option>
+                                <option value="films">Films</option>
+                                <option value="planets">Planets</option>
+                                <option value="species">Species</option>
+                                <option value="starships">Starships</option>
+                                <option value="vehicles">Vehicles</option>
+                            </select>
+                        </div>
+                        <div class="col-1">
+
+                        </div> -->
+                        <div class="col">
+                            <input class="form-control form-control-lg form-control-borderless" type="search" placeholder="Search Key" id="search">
+                        </div>
+                        <!--end of col-->
+                        <div class="col-auto">
+                            <button class="btn btn-lg btn-success" type="button" onclick="cari()">Search</button>
+                        </div>
+                        <!--end of col-->
+                    </div>
+                </form>
+                <!-- <h4>List of <span id="ket"></span> data <span id="keyword"></span></h4> -->
+                <table id="data" class="table table-resposive">
+                    
+                </table>
+            </div>
+            <!--end of col-->
+        </div>
+    <script>
+       
+        function getDataPeople(){
+            var request = new XMLHttpRequest();
+            request.open('GET', 'https://swapi.co/api/people', true);
+            request.onload = function () {
+
+            // Begin accessing JSON data here
+            var data = JSON.parse(this.response);
+            console.log(data)
+            if (request.status >= 200 && request.status < 400) {
+                console.log(data.results)
+                val = "<tr class='text-dark'><th>Name</th><th>Eye Color</th><th>Gender</th><th>Hair Color</th><th>Height</th></tr>";
+                data.results.forEach(item => {
+                    val=val + "<tr><td>"+item.name+"</td><td>"+item.eye_color+"</td><td>"+item.gender+"</td><td>"+item.hair_color+"</td><td>"+item.height+"</td></tr>"
+                });
+                document.getElementById('data').innerHTML=val
+            } else {
+                console.log('error');
+            }
+            
+            }
+
+            
+            // Array.filter
+            request.send();
+        }
+        // Filter 
+        getDataPeople();
+        function cari(){
+            // console.log(data)
+            if(document.getElementById('search').value == ''){
+                getDataPeople();
+            }else{
+                var request = new XMLHttpRequest();
+                request.open('GET', 'https://swapi.co/api/people', true);
+                request.onload = function () {
+
+                // Begin accessing JSON data here
+                var data = JSON.parse(this.response);
+                // console.log(data)
+                if (request.status >= 200 && request.status < 400) {
+                    let keysearch = document.getElementById('search').value;
+                    let newDataFilter =  "<tr class='text-dark'><th>Name</th><th>Eye Color</th><th>Gender</th><th>Hair Color</th><th>Height</th></tr>";
+                    data.results.forEach(item => {
+                        if(item.name.includes(keysearch) || item.eye_color.includes(keysearch) ||item.gender.includes(keysearch) || item.hair_color.includes(keysearch) ||item.height.includes(keysearch)){
+                            newDataFilter=newDataFilter + "<tr><td>"+item.name+"</td><td>"+item.eye_color+"</td><td>"+item.gender+"</td><td>"+item.hair_color+"</td><td>"+item.height+"</td></tr>" 
+                        }
+                        document.getElementById('data').innerHTML=newDataFilter
+                    });
+                } else {
+                    // console.log('error');
+                }
+                
+                }
+
+                
+                // Array.filter
+                request.send();
+               
+            }
+        }
+    </script>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </body>
+</html>
